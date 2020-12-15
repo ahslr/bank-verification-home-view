@@ -1,0 +1,20 @@
+image: paciolanhub/alpine-node-dev:10.15.3c
+
+stages:
+  - build
+
+Build & Test:
+  stage: build
+  except:
+    - tags
+  before_script:
+    - npm ci
+  script:
+    - npm run build
+    - npm run lint
+    - npm run test:coverage -- --colors
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - dist/
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
