@@ -27,11 +27,16 @@ module.exports = {
         use: {
           loader: "babel-loader"
         }
+      },
+      {
+        test: /\.(sass|less|css)$/,
+        use: ["style-loader", "css-loader"]
       }
     ]
   },
   resolve: {
     alias: {
+      components: path.resolve(__dirname, "src/components/"),
       "remote-component.config.js": path.resolve("./remote-component.config.js")
     }
   }

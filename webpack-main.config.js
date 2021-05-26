@@ -5,6 +5,7 @@
  *  - dist/webpack-bundle-analyzer-report.html
  */
 const webpack = require("webpack");
+const path = require("path");
 const WebpackAssetsManifest = require("webpack-assets-manifest");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const remoteComponentConfig = require("./remote-component.config").resolve;
@@ -39,6 +40,10 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.(sass|less|css)$/,
+        use: ["style-loader", "css-loader"]
+      },
+      {
         test: /\.m?js$/,
         exclude: /(node_modules|bower_components)/,
         use: {
@@ -46,5 +51,10 @@ module.exports = {
         }
       }
     ]
+  },
+  resolve: {
+    alias: {
+      components: path.resolve(__dirname, "src/components/")
+    }
   }
 };
