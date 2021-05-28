@@ -20,10 +20,23 @@ const TABS = {
   }
 };
 
+const MAX_OSKO_ACCOUNTS = 1;
+
 class App extends Component {
-  state = {
-    activeTab: "bank"
-  };
+  constructor(props) {
+    super(props);
+    const {
+      router: {
+        location: { query: { initial_bank_tab } = {} },
+      }
+    } = this.props;
+
+    const activeTab = initial_bank_tab && Object.keys(TABS).includes(initial_bank_tab) ? initial_bank_tab : "bank";
+
+    this.state = {
+      activeTab,
+    };
+  }
 
   setActiveTab = activeTab => {
     this.setState({ activeTab });
@@ -48,10 +61,10 @@ class App extends Component {
     const {
       router,
       router: {
-        location: { pathname }
+        location: { pathname, query = {} }
       }
     } = this.props;
-    router.push({ pathname, query: { [key]: value } });
+    router.push({ pathname, query: { ...query, [key]: value } });
   };
 
   setActivePageContent = (type = "bank") => {
@@ -144,7 +157,7 @@ class App extends Component {
           <div>
             {List}
           </div>
-          {lastVerified.status === 3 && (
+          {lastVerified.status === 3 && osko_account.length < MAX_OSKO_ACCOUNTS && (
             <div className="btn-wrapper">
               <div className="holla-verification-button">
                 <div className="btn-wrapper">
